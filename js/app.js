@@ -1,6 +1,7 @@
 /*
  * Create a list that holds all of your cards
  */
+var cardsArray = ["fa-diamond", "fa-paper-plane-o", "fa-anchor", "fa-bolt", "fa-cube", "fa-anchor", "fa-leaf", "fa-bicycle", "fa-diamond", "fa-bomb", "fa-leaf", "fa-bomb", "fa-bolt", "fa-bicycle", "fa-paper-plane-o", "fa-cube"];
 
 
 /*
@@ -25,6 +26,18 @@ function shuffle(array) {
     return array;
 }
 
+shuffle(cardsArray);
+//define an HTML collection that contains all elements with class name: card.
+var cardsElements = document.getElementsByClassName("card");
+
+//Loop through the HTML collection to add a font awsome tag to each card element.
+for (var i = 0; i < cardsElements.length; i++) {
+    var faTag = document.createElement('i');
+    var faIconName = cardsArray[i];
+    faTag.classList.add("fa");
+    faTag.classList.add(faIconName);
+    cardsElements[i].appendChild(faTag);
+}
 
 /*
  * set up the event listener for a card. If a card is clicked:
