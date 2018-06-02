@@ -1,15 +1,8 @@
-/*
- * Create a list that holds all of your cards
- */
+
+ // Create an array that holds all of the cards
+ 
 var cardsArray = ["fa-diamond", "fa-paper-plane-o", "fa-anchor", "fa-bolt", "fa-cube", "fa-anchor", "fa-leaf", "fa-bicycle", "fa-diamond", "fa-bomb", "fa-leaf", "fa-bomb", "fa-bolt", "fa-bicycle", "fa-paper-plane-o", "fa-cube"];
 
-
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -27,10 +20,11 @@ function shuffle(array) {
 }
 
 shuffle(cardsArray);
+
 //define an HTML collection that contains all elements with class name: card.
 var cardsElements = document.getElementsByClassName("card");
 
-//Loop through the HTML collection to add a font awsome tag to each card element.
+//Loop through the HTML collection to add a font awesome tag to each card element.
 for (var i = 0; i < cardsElements.length; i++) {
     var faTag = document.createElement('i');
     var faIconName = cardsArray[i];
@@ -49,3 +43,121 @@ for (var i = 0; i < cardsElements.length; i++) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+ function flipCard (evt) {
+    evt.target.classList.add("open");
+    evt.target.classList.add("show");
+ }
+
+ function matchingCards (arr) {
+    successfulMoves = successfulMoves + 1;
+    arr[0].classList.add("match");
+    arr[1].classList.add("match");
+    arr.pop();
+    arr.pop();
+    return successfulMoves;
+ }
+
+ function unmatchingCards (arr) {
+    unsuccessfulMoves = unsuccessfulMoves + 1;
+    arr[0].classList.remove("open");
+    arr[0].classList.remove("show");
+    arr[1].classList.remove("open");
+    arr[1].classList.remove("show");
+    arr.pop();
+    arr.pop();
+    return unsuccessfulMoves;
+ }
+
+ function movesCounter (num) {
+    num = num + 1;
+    document.getElementById("move").textContent = num;
+    return num;
+ }
+
+ function gameOver () {
+    var gameBoard = document.getElementById('game');
+    gameBoard.style.display='none';
+    document.getElementById('statistics').textContent = 'With ' + counter + ' moves and ' + numbOfStars + ' star(s)!';
+    var winModal = document.getElementById('modal');
+    winModal.style.display='block';
+    document.getElementById('motivation-message').textContent ='wohooo!';
+ }
+
+ function resetGame() {
+    closeModal();
+
+    // Reset the successful moves counter
+    counter = 0;
+
+    // reset the game board
+    for (var i = 0; i < cardsElements.length; i++) {
+        cardsElements[i].classList.remove('open', 'show', 'match');
+    }
+
+    var gameBoard = document.getElementById('game');
+    gameBoard.style.display = 'block';
+
+ }
+
+ function closeModal() {
+    var congratModal = document.getElementById('modal');
+    congratModal.style.display = 'none';
+ }
+
+// Create an array to hold the opened cards
+var openedCards = [];
+var counter = 0;
+var successfulMoves = 0;
+var unsuccessfulMoves = 0;
+var numbOfStars = 3
+
+document.getElementById("cardsDeck").addEventListener('click', function (evt) {
+    if (evt.target.nodeName === 'LI') { 
+        flipCard(evt);
+        var card = evt.target;
+        
+        openedCards.push(card);
+
+        if (openedCards.length === 2) {
+            counter = movesCounter(counter);
+            if (openedCards[0].firstChild.className === openedCards[1].firstChild.className) {
+                successfulMoves = matchingCards(openedCards);
+
+                // if successfulMoves is equal to 8, the player wins the game i.e: hide the grid and display congratulations message.
+                if (successfulMoves === 8) {
+                    gameOver();
+                }
+            }
+            else {
+                setTimeout(function() {
+                    unsuccessfulMoves = unmatchingCards(openedCards);
+                }, 500);
+
+                if (unsuccessfulMoves === 9) {
+                    numbOfStars = numbOfStars - 1;
+                }
+                else if (unsuccessfulMoves === 18) {
+                    numbOfStars = numbOfStars -1;
+                }
+            }
+        }
+    }
+});
+
+document.getElementById('playAgain').addEventListener('click', function() {
+    resetGame();
+})
+
+document.getElementById('closeBut').addEventListener('click', function() {
+    closeModal();
+})
+
+document.getElementById('refresh').addEventListener('click', function() {
+    resetGame();
+})
+
+
+
+
+
+
