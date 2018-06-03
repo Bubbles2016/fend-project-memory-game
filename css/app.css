@@ -111,3 +111,53 @@ h1 {
 #modal {
     display: none;
 }
+
+@media (max-width: 600px) {
+    #cardsDeck {
+        width: 500px;
+        min-height: 500px;
+    }
+
+    .card {
+        height: 100px !important;
+        width: 100px !important;
+    }
+}
+
+@media (max-width: 425px) {
+    #cardsDeck {
+        width: 400px;
+    }
+
+    .card {
+        height: 75px !important;
+        width: 75px !important;
+    }
+}
+
+@media (max-width: 375px) {
+    #cardsDeck {
+        width: 350px;
+    }
+
+    .card {
+        height: 65px !important;
+        width: 65px !important;
+    }
+}
+
+@media (max-width: 320px) {
+    #cardsDeck {
+        width: 320px;
+        min-height: 450px;
+    }
+
+    .card {
+        height: 55px !important;
+        width: 55px !important;
+    }
+
+    .score-panel {
+        width: 300px;
+    }
+}

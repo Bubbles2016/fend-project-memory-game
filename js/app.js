@@ -75,8 +75,12 @@ for (var i = 0; i < cardsElements.length; i++) {
  }
 
  function gameOver () {
-    var gameBoard = document.getElementById('game');
-    gameBoard.style.display='none';
+    var scorePanel = document.getElementById('score');
+    scorePanel.style.visibility = 'hidden';
+
+    var deck = document.getElementById('cardsDeck');
+    deck.style.visibility = 'hidden';
+
     document.getElementById('statistics').textContent = 'With ' + counter + ' moves and ' + numbOfStars + ' star(s)!';
     var winModal = document.getElementById('modal');
     winModal.style.display='block';
@@ -86,16 +90,25 @@ for (var i = 0; i < cardsElements.length; i++) {
  function resetGame() {
     closeModal();
 
-    // Reset the successful moves counter
+    // Reset the successful moves counter.
     counter = 0;
 
-    // reset the game board
+    // reset the game board. Remove the classes.
     for (var i = 0; i < cardsElements.length; i++) {
         cardsElements[i].classList.remove('open', 'show', 'match');
     }
 
-    var gameBoard = document.getElementById('game');
-    gameBoard.style.display = 'block';
+    // shuffle the array.
+    shuffle(openedCards);
+
+    // Reset the number of moves.
+    document.getElementById("move").textContent = '';
+
+    var scorePanel = document.getElementById('score');
+    scorePanel.style.visibility = 'visible'; 
+
+    var gameBoard = document.getElementById('cardsDeck');
+    gameBoard.style.visibility = 'visible';
 
  }
 
@@ -123,9 +136,9 @@ document.getElementById("cardsDeck").addEventListener('click', function (evt) {
             if (openedCards[0].firstChild.className === openedCards[1].firstChild.className) {
                 successfulMoves = matchingCards(openedCards);
 
-                // if successfulMoves is equal to 8, the player wins the game i.e: hide the grid and display congratulations message.
+                // if successfulMoves is equal to 8, the player wins the game.
                 if (successfulMoves === 8) {
-                    gameOver();
+                    setTimeout(gameOver, 500);
                 }
             }
             else {
