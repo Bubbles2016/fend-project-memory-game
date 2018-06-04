@@ -1,7 +1,9 @@
 
  // Create an array that holds all of the cards
- 
 var cardsArray = ["fa-diamond", "fa-paper-plane-o", "fa-anchor", "fa-bolt", "fa-cube", "fa-anchor", "fa-leaf", "fa-bicycle", "fa-diamond", "fa-bomb", "fa-leaf", "fa-bomb", "fa-bolt", "fa-bicycle", "fa-paper-plane-o", "fa-cube"];
+
+//define an HTML collection that contains all elements with class name: card.
+var cardsElements = document.getElementsByClassName("card");
 
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -19,19 +21,22 @@ function shuffle(array) {
     return array;
 }
 
+function buildCards () {
+    for (var i = 0; i < cardsElements.length; i++) {
+        var faTag = document.createElement('i');
+        var faIconName = cardsArray[i];
+        faTag.classList.add("fa");
+        faTag.classList.add(faIconName);
+        cardsElements[i].appendChild(faTag);
+    }
+}
+
+
 shuffle(cardsArray);
 
-//define an HTML collection that contains all elements with class name: card.
-var cardsElements = document.getElementsByClassName("card");
 
 //Loop through the HTML collection to add a font awesome tag to each card element.
-for (var i = 0; i < cardsElements.length; i++) {
-    var faTag = document.createElement('i');
-    var faIconName = cardsArray[i];
-    faTag.classList.add("fa");
-    faTag.classList.add(faIconName);
-    cardsElements[i].appendChild(faTag);
-}
+buildCards ();
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -43,6 +48,7 @@ for (var i = 0; i < cardsElements.length; i++) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
  function flipCard (evt) {
     evt.target.classList.add("open");
     evt.target.classList.add("show");
@@ -51,7 +57,12 @@ for (var i = 0; i < cardsElements.length; i++) {
  function matchingCards (arr) {
     successfulMoves = successfulMoves + 1;
     arr[0].classList.add("match");
+    arr[0].classList.add("animated");
+    arr[0].classList.add("swing");
     arr[1].classList.add("match");
+    arr[1].classList.add("animated");
+    arr[1].classList.add("swing");
+    
     arr.pop();
     arr.pop();
     return successfulMoves;
@@ -59,6 +70,10 @@ for (var i = 0; i < cardsElements.length; i++) {
 
  function unmatchingCards (arr) {
     unsuccessfulMoves = unsuccessfulMoves + 1;
+
+    var card = arr[0];
+    var card2 = arr[1];
+
     arr[0].classList.remove("open");
     arr[0].classList.remove("show");
     arr[1].classList.remove("open");
@@ -93,13 +108,19 @@ for (var i = 0; i < cardsElements.length; i++) {
     // Reset the successful moves counter.
     counter = 0;
 
-    // reset the game board. Remove the classes.
+    // reset the game board. Remove the classes. 
     for (var i = 0; i < cardsElements.length; i++) {
         cardsElements[i].classList.remove('open', 'show', 'match');
+        //remove all <i> tags.
+        cardsElements[i].removeChild(cardsElements[i].childNodes[0]);
     }
 
     // shuffle the array.
-    shuffle(openedCards);
+    shuffle(cardsArray);
+
+    // Add the <i> tags after we have shuffled the cardsArray
+    buildCards();
+
 
     // Reset the number of moves.
     document.getElementById("move").textContent = '';
@@ -123,11 +144,14 @@ var counter = 0;
 var successfulMoves = 0;
 var unsuccessfulMoves = 0;
 var numbOfStars = 3
+var indexes = [];
 
 document.getElementById("cardsDeck").addEventListener('click', function (evt) {
     if (evt.target.nodeName === 'LI') { 
         flipCard(evt);
         var card = evt.target;
+        var index = card.selectedIndex;
+        indexes.push(index);
         
         openedCards.push(card);
 
