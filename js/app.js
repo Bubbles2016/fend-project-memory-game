@@ -23,6 +23,7 @@ function shuffle(array) {
 
 function buildCards () {
     for (var i = 0; i < cardsElements.length; i++) {
+        // TODO: add a new <i> to every <li> element in the HTML collection cardsElements.
         var faTag = document.createElement('i');
         var faIconName = cardsArray[i];
         faTag.classList.add("fa");
@@ -58,6 +59,8 @@ buildCards ();
     successfulMoves = successfulMoves + 1;
     arr[0].classList.add("match");
     arr[0].classList.add("animated");
+
+    // TODO: add swing animation when both cards match.
     arr[0].classList.add("swing");
     arr[1].classList.add("match");
     arr[1].classList.add("animated");
@@ -68,37 +71,31 @@ buildCards ();
     return successfulMoves;
  }
 
- function unmatchingCards (arr) {
+function unmatchingCards (arr) {
     unsuccessfulMoves = unsuccessfulMoves + 1;
-    
-    // save the <li> tags in 2 variables.
+
     var card = arr[0];
-    card.classList.remove("animated");
-    card.classList.remove("shake");
-    
     var card2 = arr[1];
-    card2.classList.remove("animated");
-    card2.classList.remove("shake");
-    
-    // remove the card from 'cardsDeck, which is the parent node.
-    var cardsDeck = document.getElementById("cardsDeck");
-    cardsDeck.removeChild(arr[0]);
-    
-    // append a new <li> tag with classes: animated shake.
-    cardsDeck.appendChild(card);
+
     card.classList.add("animated");
     card.classList.add("shake");
-    cardsDeck.removeChild(arr[1]);
-    // append a new <li> tag with classes: animated shake.
-    cardsDeck.appendChild(card2);
+
     card2.classList.add("animated");
     card2.classList.add("shake");
-    card.classList.remove("open");
-    card.classList.remove("show");
-    card2.classList.remove("open");
-    card2.classList.remove("show");
-    arr.pop();
-    arr.pop();
+
+    setTimeout(function() {
+        card.classList.remove("open");
+        card.classList.remove("show");
+        card.classList.remove("animated");
+        card.classList.remove("shake");
+        card2.classList.remove("open");
+        card2.classList.remove("show");
+        card2.classList.remove("animated");
+        card2.classList.remove("shake");
+        arr.pop();
+        arr.pop();
+    }, 1000);
+
     return unsuccessfulMoves;
  }
 
@@ -140,6 +137,8 @@ buildCards ();
     // Add the <i> tags after we have shuffled the cardsArray
     buildCards();
 
+    // reset the number of successful moves
+    successfulMoves = 0;
 
     // Reset the number of moves.
     document.getElementById("move").textContent = '';
@@ -185,9 +184,10 @@ document.getElementById("cardsDeck").addEventListener('click', function (evt) {
                 }
             }
             else {
-                setTimeout(function() {
-                    unsuccessfulMoves = unmatchingCards(openedCards);
-                }, 500);
+                //setTimeout(function() {
+                  //  unsuccessfulMoves = unmatchingCards(openedCards);
+                //}, 500);
+                unsuccessfulMoves = unmatchingCards(openedCards);
 
                 if (unsuccessfulMoves === 9) {
                     numbOfStars = numbOfStars - 1;
