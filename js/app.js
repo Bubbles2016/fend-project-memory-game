@@ -70,14 +70,33 @@ buildCards ();
 
  function unmatchingCards (arr) {
     unsuccessfulMoves = unsuccessfulMoves + 1;
-
+    
+    // save the <li> tags in 2 variables.
     var card = arr[0];
+    card.classList.remove("animated");
+    card.classList.remove("shake");
+    
     var card2 = arr[1];
-
-    arr[0].classList.remove("open");
-    arr[0].classList.remove("show");
-    arr[1].classList.remove("open");
-    arr[1].classList.remove("show");
+    card2.classList.remove("animated");
+    card2.classList.remove("shake");
+    
+    // remove the card from 'cardsDeck, which is the parent node.
+    var cardsDeck = document.getElementById("cardsDeck");
+    cardsDeck.removeChild(arr[0]);
+    
+    // append a new <li> tag with classes: animated shake.
+    cardsDeck.appendChild(card);
+    card.classList.add("animated");
+    card.classList.add("shake");
+    cardsDeck.removeChild(arr[1]);
+    // append a new <li> tag with classes: animated shake.
+    cardsDeck.appendChild(card2);
+    card2.classList.add("animated");
+    card2.classList.add("shake");
+    card.classList.remove("open");
+    card.classList.remove("show");
+    card2.classList.remove("open");
+    card2.classList.remove("show");
     arr.pop();
     arr.pop();
     return unsuccessfulMoves;
