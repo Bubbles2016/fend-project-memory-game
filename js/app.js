@@ -74,24 +74,21 @@ buildCards ();
 function unmatchingCards (arr) {
     unsuccessfulMoves = unsuccessfulMoves + 1;
 
-    var card = arr[0];
-    var card2 = arr[1];
+    arr[0].classList.add("animated");
+    arr[0].classList.add("shake");
 
-    card.classList.add("animated");
-    card.classList.add("shake");
-
-    card2.classList.add("animated");
-    card2.classList.add("shake");
+    arr[1].classList.add("animated");
+    arr[1].classList.add("shake");
 
     setTimeout(function() {
-        card.classList.remove("open");
-        card.classList.remove("show");
-        card.classList.remove("animated");
-        card.classList.remove("shake");
-        card2.classList.remove("open");
-        card2.classList.remove("show");
-        card2.classList.remove("animated");
-        card2.classList.remove("shake");
+        arr[0].classList.remove("open");
+        arr[0].classList.remove("show");
+        arr[0].classList.remove("animated");
+        arr[0].classList.remove("shake");
+        arr[1].classList.remove("open");
+        arr[1].classList.remove("show");
+        arr[1].classList.remove("animated");
+        arr[1].classList.remove("shake");
         arr.pop();
         arr.pop();
     }, 1000);
@@ -126,7 +123,7 @@ function unmatchingCards (arr) {
 
     // reset the game board. Remove the classes. 
     for (var i = 0; i < cardsElements.length; i++) {
-        cardsElements[i].classList.remove('open', 'show', 'match');
+        cardsElements[i].classList.remove('open', 'show', 'match', 'animated', 'swing');
         //remove all <i> tags.
         cardsElements[i].removeChild(cardsElements[i].childNodes[0]);
     }
@@ -184,9 +181,6 @@ document.getElementById("cardsDeck").addEventListener('click', function (evt) {
                 }
             }
             else {
-                //setTimeout(function() {
-                  //  unsuccessfulMoves = unmatchingCards(openedCards);
-                //}, 500);
                 unsuccessfulMoves = unmatchingCards(openedCards);
 
                 if (unsuccessfulMoves === 9) {
