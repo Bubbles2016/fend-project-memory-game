@@ -5,6 +5,11 @@ var cardsArray = ["fa-diamond", "fa-paper-plane-o", "fa-anchor", "fa-bolt", "fa-
 //define an HTML collection that contains all elements with class name: card.
 var cardsElements = document.getElementsByClassName("card");
 
+var openedCards = [];
+var counter = 0;
+var successfulMoves = 0;
+var unsuccessfulMoves = 0;
+var numbOfStars = 3
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -23,7 +28,7 @@ function shuffle(array) {
 
 function buildCards () {
     for (var i = 0; i < cardsElements.length; i++) {
-        // TODO: add a new <i> to every <li> element in the HTML collection cardsElements.
+        // TODO: add a new <i> inside every <li> element in the HTML collection 'cardsElements'.
         var faTag = document.createElement('i');
         var faIconName = cardsArray[i];
         faTag.classList.add("fa");
@@ -32,36 +37,19 @@ function buildCards () {
     }
 }
 
-
-shuffle(cardsArray);
-
-
-//Loop through the HTML collection to add a font awesome tag to each card element.
-buildCards ();
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
-
- function flipCard (evt) {
+function flipCard (evt) {
     evt.target.classList.add("open");
     evt.target.classList.add("show");
  }
 
  function matchingCards (arr) {
     successfulMoves = successfulMoves + 1;
+
+    // TODO: add match, animated and swing animation classes when both cards match.
     arr[0].classList.add("match");
     arr[0].classList.add("animated");
-
-    // TODO: add swing animation when both cards match.
     arr[0].classList.add("swing");
+
     arr[1].classList.add("match");
     arr[1].classList.add("animated");
     arr[1].classList.add("swing");
@@ -74,12 +62,14 @@ buildCards ();
 function unmatchingCards (arr) {
     unsuccessfulMoves = unsuccessfulMoves + 1;
 
+    // add classes animated and shake on both cards.
     arr[0].classList.add("animated");
     arr[0].classList.add("shake");
 
     arr[1].classList.add("animated");
     arr[1].classList.add("shake");
 
+    // remove all classes after 1 second. i.e: CSS animation ends
     setTimeout(function() {
         arr[0].classList.remove("open");
         arr[0].classList.remove("show");
@@ -112,7 +102,7 @@ function unmatchingCards (arr) {
     document.getElementById('statistics').textContent = 'With ' + counter + ' moves and ' + numbOfStars + ' star(s)!';
     var winModal = document.getElementById('modal');
     winModal.style.display='block';
-    document.getElementById('motivation-message').textContent ='wohooo!';
+    document.getElementById('motivation-message').textContent ='woohooo!';
  }
 
  function resetGame() {
@@ -121,17 +111,17 @@ function unmatchingCards (arr) {
     // Reset the successful moves counter.
     counter = 0;
 
-    // reset the game board. Remove the classes. 
+    // reset the game board. Remove the classes including animation classes for matching cards.
     for (var i = 0; i < cardsElements.length; i++) {
         cardsElements[i].classList.remove('open', 'show', 'match', 'animated', 'swing');
-        //remove all <i> tags.
+        //remove all <i> tags inside the <li> tags
         cardsElements[i].removeChild(cardsElements[i].childNodes[0]);
     }
 
-    // shuffle the array.
+    // shuffle the array to change the order of strings randomly inside the cardsArray.
     shuffle(cardsArray);
 
-    // Add the <i> tags after we have shuffled the cardsArray
+    // Add the <i> tags after we have shuffled the cardsArray.
     buildCards();
 
     // reset the number of successful moves
@@ -153,20 +143,18 @@ function unmatchingCards (arr) {
     congratModal.style.display = 'none';
  }
 
-// Create an array to hold the opened cards
-var openedCards = [];
-var counter = 0;
-var successfulMoves = 0;
-var unsuccessfulMoves = 0;
-var numbOfStars = 3
-var indexes = [];
+shuffle(cardsArray);
+
+
+//Loop through the HTML collection to add a font awesome tag to each card element.
+buildCards ();
+
+//document.getElementById("test").style.backgroundImage = "url('./background2.jpg')";
 
 document.getElementById("cardsDeck").addEventListener('click', function (evt) {
     if (evt.target.nodeName === 'LI') { 
         flipCard(evt);
         var card = evt.target;
-        var index = card.selectedIndex;
-        indexes.push(index);
         
         openedCards.push(card);
 
@@ -176,7 +164,7 @@ document.getElementById("cardsDeck").addEventListener('click', function (evt) {
                 successfulMoves = matchingCards(openedCards);
 
                 // if successfulMoves is equal to 8, the player wins the game.
-                if (successfulMoves === 8) {
+                if (successfulMoves === 1) {
                     setTimeout(gameOver, 500);
                 }
             }
@@ -193,13 +181,15 @@ document.getElementById("cardsDeck").addEventListener('click', function (evt) {
         }
     }
 });
-
 document.getElementById('playAgain').addEventListener('click', function() {
     resetGame();
 })
 
 document.getElementById('closeBut').addEventListener('click', function() {
+    // close the congratulations modal, hide the game's title and change its background image.
     closeModal();
+    document.getElementById("title").style.visibility = 'hidden';
+    document.getElementById("body").style.backgroundImage = "url('./img/gameOverBackground.png')";
 })
 
 document.getElementById('refresh').addEventListener('click', function() {
