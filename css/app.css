@@ -112,6 +112,31 @@ h1 {
     display: none;
 }
 
+#leaderboard {
+    display: none;
+}
+
+/* styling the leaderboard*/
+
+#titleOfTable {
+    padding-right: 30px;
+}
+
+#firstName1,
+#score1    {
+    background-color: gold;
+}
+
+#firstName2,
+#score2    {
+    background-color: silver;
+}
+
+#firstName3,
+#score3    {
+    background-color: #cd7f32;
+}
+
 /*media queries*/
 
 @media (max-width: 600px) {

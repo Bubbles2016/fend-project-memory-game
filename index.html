@@ -34,7 +34,7 @@
         	</div>
         </section>
 
-        <section class="congratsModal" id="modal">
+        <section id="modal">
             <div id="myModal" role="dialog">
                 <div class="modal-dialog">
                     <!-- Modal content-->
@@ -48,11 +48,41 @@
                             <p id="motivation-message"><p>
                         </div>
                         <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" id="leaderboardBut">Top 5</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal" id="playAgain">Play Again</button>
                         </div>
                     </div>
                 </div>
             </div>
+        </section>
+
+        <section id="leaderboard">
+            <table style="width:100%">
+                <tr>
+                    <th id="titleOfTable">Name</th>
+                    <th>Score</th> 
+                </tr>
+                <tr>
+                    <td id="firstName1"></td>
+                    <td id="score1"></td>
+                </tr>
+                <tr>
+                    <td id="firstName2"></td>
+                    <td id="score2"></td>
+                </tr>
+                <tr>
+                    <td id="firstName3"></td>
+                    <td id="score3"></td>
+                </tr>
+                <tr>
+                    <td id="firstName4"></td>
+                    <td id="score4"></td>
+                </tr>
+                <tr>
+                    <td id="firstName5"></td>
+                    <td id="score5"></td>
+                </tr>
+            </table>
         </section>
         
         <ul class="deck" id="cardsDeck">

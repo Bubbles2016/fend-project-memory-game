@@ -2,6 +2,10 @@
  // Create an array that holds all of the cards
 var cardsArray = ["fa-diamond", "fa-paper-plane-o", "fa-anchor", "fa-bolt", "fa-cube", "fa-anchor", "fa-leaf", "fa-bicycle", "fa-diamond", "fa-bomb", "fa-leaf", "fa-bomb", "fa-bolt", "fa-bicycle", "fa-paper-plane-o", "fa-cube"];
 
+// define a mock array of objects. Each object holds a fake player name and a fake score.
+var players = [{firstName:"Sam", score: 15}, {firstName:"John", score:23}, {firstName:"Jane", score:99}, {firstName:"Charlotte", score: 10}];
+//console.log(players[0].firstName);
+
 //define an HTML collection that contains all elements with class name: card.
 var cardsElements = document.getElementsByClassName("card");
 
@@ -92,12 +96,45 @@ function unmatchingCards (arr) {
     return num;
  }
 
+ function sortPlayers (arr) {
+    arr.sort(function(a, b)
+    {
+      return a[1]-b[1];
+    });
+    return players;
+ }
+
+function compareScores(a, b) {
+    return a.score - b.score;
+}
+
  function gameOver () {
     var scorePanel = document.getElementById('score');
     scorePanel.style.visibility = 'hidden';
 
     var deck = document.getElementById('cardsDeck');
     deck.style.visibility = 'hidden';
+
+    // save the name and score of the current player in a new object.
+    me = {firstName: "You", score: counter};
+
+    // delete the previous score.
+    if (players.length === 5) {
+        players.forEach(function(player) {
+            if (player.firstName === "You") {
+                var pos = players.indexOf(player);
+                players.splice(pos, 1);
+            }
+        });
+    }
+
+    // our array contains 4 fixed objects. We push only the lastest score of the player.
+    players.push(me);
+    
+    // sort the array of players.
+    players.sort(compareScores);
+    //console.log(players);
+
 
     document.getElementById('statistics').textContent = 'With ' + counter + ' moves and ' + numbOfStars + ' star(s)!';
     var winModal = document.getElementById('modal');
@@ -107,6 +144,9 @@ function unmatchingCards (arr) {
 
  function resetGame() {
     closeModal();
+
+    // hide the leaderboard table.
+    document.getElementById("leaderboard").style.display="none";
 
     // Reset the successful moves counter.
     counter = 0;
@@ -143,6 +183,24 @@ function unmatchingCards (arr) {
     congratModal.style.display = 'none';
  }
 
+ function leaderboard (arr) {
+    document.getElementById("leaderboard").style.display="block";
+    document.getElementById("firstName1").textContent = arr[0].firstName;
+    document.getElementById("score1").textContent = arr[0].score;
+
+    document.getElementById("firstName2").textContent = arr[1].firstName;
+    document.getElementById("score2").textContent = arr[1].score;
+
+    document.getElementById("firstName3").textContent = arr[2].firstName;
+    document.getElementById("score3").textContent = arr[2].score;
+
+    document.getElementById("firstName4").textContent = arr[3].firstName;
+    document.getElementById("score4").textContent = arr[3].score;
+
+    document.getElementById("firstName5").textContent = arr[4].firstName;
+    document.getElementById("score5").textContent = arr[4].score;
+ }
+
 shuffle(cardsArray);
 
 
@@ -164,7 +222,7 @@ document.getElementById("cardsDeck").addEventListener('click', function (evt) {
                 successfulMoves = matchingCards(openedCards);
 
                 // if successfulMoves is equal to 8, the player wins the game.
-                if (successfulMoves === 1) {
+                if (successfulMoves === 8) {
                     setTimeout(gameOver, 500);
                 }
             }
@@ -181,6 +239,11 @@ document.getElementById("cardsDeck").addEventListener('click', function (evt) {
         }
     }
 });
+
+document.getElementById('leaderboardBut').addEventListener('click', function() {
+    leaderboard(players);
+})
+
 document.getElementById('playAgain').addEventListener('click', function() {
     resetGame();
 })
@@ -189,7 +252,7 @@ document.getElementById('closeBut').addEventListener('click', function() {
     // close the congratulations modal, hide the game's title and change its background image.
     closeModal();
     document.getElementById("title").style.visibility = 'hidden';
-    document.getElementById("body").style.backgroundImage = "url('./img/gameOverBackground.png')";
+    document.getElementById("body").style.backgroundImage = "url('img/gameOverBackground.png')";
 })
 
 document.getElementById('refresh').addEventListener('click', function() {
