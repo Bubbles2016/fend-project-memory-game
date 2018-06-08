@@ -117,6 +117,9 @@ h1 {
 }
 
 /* styling the leaderboard*/
+table {
+    width: 100%;
+}
 
 #titleOfTable {
     padding-right: 30px;

@@ -4,7 +4,6 @@ var cardsArray = ["fa-diamond", "fa-paper-plane-o", "fa-anchor", "fa-bolt", "fa-
 
 // define a mock array of objects. Each object holds a fake player name and a fake score.
 var players = [{firstName:"Sam", score: 15}, {firstName:"John", score:23}, {firstName:"Jane", score:99}, {firstName:"Charlotte", score: 10}];
-//console.log(players[0].firstName);
 
 //define an HTML collection that contains all elements with class name: card.
 var cardsElements = document.getElementsByClassName("card");
@@ -115,27 +114,6 @@ function compareScores(a, b) {
     var deck = document.getElementById('cardsDeck');
     deck.style.visibility = 'hidden';
 
-    // save the name and score of the current player in a new object.
-    me = {firstName: "You", score: counter};
-
-    // delete the previous score.
-    if (players.length === 5) {
-        players.forEach(function(player) {
-            if (player.firstName === "You") {
-                var pos = players.indexOf(player);
-                players.splice(pos, 1);
-            }
-        });
-    }
-
-    // our array contains 4 fixed objects. We push only the lastest score of the player.
-    players.push(me);
-    
-    // sort the array of players.
-    players.sort(compareScores);
-    //console.log(players);
-
-
     document.getElementById('statistics').textContent = 'With ' + counter + ' moves and ' + numbOfStars + ' star(s)!';
     var winModal = document.getElementById('modal');
     winModal.style.display='block';
@@ -161,14 +139,17 @@ function compareScores(a, b) {
     // shuffle the array to change the order of strings randomly inside the cardsArray.
     shuffle(cardsArray);
 
-    // Add the <i> tags after we have shuffled the cardsArray.
+    // add the <i> tags after we have shuffled the cardsArray.
     buildCards();
 
     // reset the number of successful moves
     successfulMoves = 0;
 
-    // Reset the number of moves.
+    // reset the number of moves.
     document.getElementById("move").textContent = '';
+
+    // reset the nick name input field
+    document.getElementById("playerName").value = '';
 
     var scorePanel = document.getElementById('score');
     scorePanel.style.visibility = 'visible'; 
@@ -184,6 +165,27 @@ function compareScores(a, b) {
  }
 
  function leaderboard (arr) {
+    // Save name and score to the current local store
+    var player = document.getElementById("playerName").value;
+    if (player ==="") {
+        player = "unknown";
+    }
+    localStorage.setItem("player", player);
+    localStorage.setItem("score", counter);
+
+    // save the name and score of the current player in a new object.
+    var name = localStorage.getItem("player");
+    var finalScore = localStorage.getItem("score");
+    me = {firstName: name, score: finalScore};
+
+    players.push(me);
+
+    // clear the input field containing the nick name of the current player.
+    localStorage.setItem("player", "");
+
+    // sort the array of players.
+    players.sort(compareScores);         
+
     document.getElementById("leaderboard").style.display="block";
     document.getElementById("firstName1").textContent = arr[0].firstName;
     document.getElementById("score1").textContent = arr[0].score;
@@ -207,8 +209,6 @@ shuffle(cardsArray);
 //Loop through the HTML collection to add a font awesome tag to each card element.
 buildCards ();
 
-//document.getElementById("test").style.backgroundImage = "url('./background2.jpg')";
-
 document.getElementById("cardsDeck").addEventListener('click', function (evt) {
     if (evt.target.nodeName === 'LI') { 
         flipCard(evt);
@@ -222,7 +222,7 @@ document.getElementById("cardsDeck").addEventListener('click', function (evt) {
                 successfulMoves = matchingCards(openedCards);
 
                 // if successfulMoves is equal to 8, the player wins the game.
-                if (successfulMoves === 8) {
+                if (successfulMoves === 1) {
                     setTimeout(gameOver, 500);
                 }
             }
@@ -251,8 +251,10 @@ document.getElementById('playAgain').addEventListener('click', function() {
 document.getElementById('closeBut').addEventListener('click', function() {
     // close the congratulations modal, hide the game's title and change its background image.
     closeModal();
+    document.getElementById("leaderboard").style.display="none";
     document.getElementById("title").style.visibility = 'hidden';
     document.getElementById("body").style.backgroundImage = "url('img/gameOverBackground.png')";
+
 })
 
 document.getElementById('refresh').addEventListener('click', function() {
