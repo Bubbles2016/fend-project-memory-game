@@ -213,6 +213,22 @@ document.getElementById("cardsDeck").addEventListener('click', function (evt) {
     if (evt.target.nodeName === 'LI') { 
         flipCard(evt);
         var card = evt.target;
+
+        // listen to specific keydown on the keyboard such as left, right, up and down keys. 
+        document.addEventListener("keydown", function(e) {
+            var keycode = e.keyCode;
+            if (keycode === 39) { // right arrow  
+                var rightSiblingCard = card.nextElementSibling;
+                rightSiblingCard.setAttribute("id", "currentCard");
+            }
+            console.log(rightSiblingCard);
+            document.getElementById("currentCard").addEventListener("keydown", function(event) {
+                var keycode = event.keyCode;
+                if (keycode === 13) { // enter key  
+                    flipCard(event);
+                }
+            })
+        });
         
         openedCards.push(card);
 
