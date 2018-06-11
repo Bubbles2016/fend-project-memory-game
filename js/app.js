@@ -41,6 +41,7 @@ function buildCards () {
 }
 
 function flipCard (evt) {
+    //console.log(evt);
     evt.target.classList.add("open");
     evt.target.classList.add("show");
  }
@@ -209,6 +210,8 @@ shuffle(cardsArray);
 //Loop through the HTML collection to add a font awesome tag to each card element.
 buildCards ();
 
+var adjacentCard;
+
 document.getElementById("cardsDeck").addEventListener('click', function (evt) {
     if (evt.target.nodeName === 'LI') { 
         flipCard(evt);
@@ -218,16 +221,9 @@ document.getElementById("cardsDeck").addEventListener('click', function (evt) {
         document.addEventListener("keydown", function(e) {
             var keycode = e.keyCode;
             if (keycode === 39) { // right arrow  
-                var rightSiblingCard = card.nextElementSibling;
-                rightSiblingCard.setAttribute("id", "currentCard");
+                var adjacentCard = card.nextElementSibling;
+                console.log(adjacentCard);
             }
-            console.log(rightSiblingCard);
-            document.getElementById("currentCard").addEventListener("keydown", function(event) {
-                var keycode = event.keyCode;
-                if (keycode === 13) { // enter key  
-                    flipCard(event);
-                }
-            })
         });
         
         openedCards.push(card);
@@ -255,6 +251,37 @@ document.getElementById("cardsDeck").addEventListener('click', function (evt) {
         }
     }
 });
+
+var allCards = document.getElementsByClassName('card');
+
+for(var i = 0; i < allCards.length; i++) {
+    allCards[i].addEventListener('keydown', function(ev) {
+        ev.stopPropagation();
+        ev.preventDefault();
+        var card = ev.target;
+        var keycode = ev.keyCode;
+        if (keycode === 13) { // enter key  
+            console.log(keycode);
+            ev.target = adjacentCard;
+            flipCard(ev);
+        }
+    });
+}
+/*document.addEventListener("keydown", function(e) {
+    //if (event.target.nodeName === 'LI') { 
+        var card = e.target;
+        var keycode = e.keyCode;
+        console.log(keycode);
+        if (keycode === 39) { // right arrow  
+            var adjacentCard = card.nextElementSibling;
+            console.log(adjacentCard);
+        }
+        else if (keycode === 13) {//enter key
+            event.target = adjacentCard;
+            flipCard(event);
+        }
+    //}
+});*/
 
 document.getElementById('leaderboardBut').addEventListener('click', function() {
     leaderboard(players);
