@@ -221,12 +221,62 @@ document.getElementById("cardsDeck").addEventListener('click', function (evt) {
         // listen to specific keydown on the keyboard such as left, right, up and down keys. 
         document.addEventListener("keydown", function(e) {
             var keycode = e.keyCode;
-            if (keycode === 39) { // right arrow  
-                var adjacentCard = '';
-                adjacentCard = card.nextElementSibling;
-                //console.log(adjacentCard);
-                adjacentCard.focus();
+            var adjacentCard = '';
+            if (keycode === 39) { // right arrow shortcut
+                if (card.nextElementSibling != null) {
+                    adjacentCard = card.nextElementSibling;
+                    //console.log(adjacentCard);
+                    adjacentCard.focus();
+                    // set card now to be equal to the card with focus
+                    card = adjacentCard;
+                }
             }
+
+            else if (keycode === 37) { // left arrow shortcut
+                if (card.previousElementSibling != null) {
+                    adjacentCard = card.previousElementSibling;
+                    adjacentCard.focus();       
+                    card = adjacentCard;
+                }
+            }
+
+            else if (keycode === 38) { //up arrow shortcut
+                var previousCard = card;
+                var previousCardsFound = 0;
+                // use the for loop to reach to the 4th previous sibling of the current card. 
+                for (i = 0; i < 4; i++) {
+                    if (previousCard.previousElementSibling != null) {
+                        previousCard = previousCard.previousElementSibling;
+                        previousCardsFound = previousCardsFound + 1   
+                    }
+                }
+
+                // check if the 4th previous sibling exists. And make sure to set focus on the 4th previous element. Not the ones before it.
+                if (previousCard != null && previousCardsFound === 4) {
+                    adjacentCard = previousCard;
+                    adjacentCard.focus();
+                    card = adjacentCard;
+                }
+            }
+
+            else if (keycode === 40) { //down arrow shortcut
+                var nextCard = card;
+                var nextCardsFound = 0;
+                // use the for loop to reach to the 4th next sibling of the current card. 
+                for (i = 0; i < 4; i++) {
+                    if (nextCard.nextElementSibling != null) {
+                        nextCard = nextCard.nextElementSibling;
+                        nextCardsFound = nextCardsFound + 1   
+                    }
+                }
+
+                // check if the 4th next sibling exists. And make sure to set focus on the 4th next element. Not the ones before it.
+                if (nextCard != null && nextCardsFound === 4) {
+                    adjacentCard = nextCard;
+                    adjacentCard.focus();
+                    card = adjacentCard;
+                }
+            }            
         });
         
         openedCards.push(card);
