@@ -108,6 +108,10 @@ h1 {
     cursor: pointer;
 }
 
+#minutes {
+    margin-left: 10px;
+}
+
 #modal {
     display: none;
 }

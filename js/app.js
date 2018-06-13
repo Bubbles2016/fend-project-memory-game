@@ -13,6 +13,9 @@ var counter = 0;
 var successfulMoves = 0;
 var unsuccessfulMoves = 0;
 var numbOfStars = 3
+var minutesLabel = document.getElementById("minutes");
+var secondsLabel = document.getElementById("seconds");
+var totalSeconds = 0;
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -27,6 +30,21 @@ function shuffle(array) {
     }
 
     return array;
+}
+
+function setTime() {
+  ++totalSeconds;
+  secondsLabel.innerHTML = pad(totalSeconds % 60);
+  minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+}
+
+function pad(val) {
+  var valString = val + "";
+  if (valString.length < 2) {
+    return "0" + valString;
+  } else {
+    return valString;
+  }
 }
 
 function buildCards () {
@@ -110,13 +128,16 @@ function compareScores(a, b) {
 }
 
  function gameOver () {
+    // stop the count up timer
+    //clearInterval(timer);
+
     var scorePanel = document.getElementById('score');
     scorePanel.style.visibility = 'hidden';
 
     var deck = document.getElementById('cardsDeck');
     deck.style.visibility = 'hidden';
 
-    document.getElementById('statistics').textContent = 'With ' + counter + ' moves and ' + numbOfStars + ' star(s)!';
+    document.getElementById('statistics').textContent = 'Your Time (mm:ss) is: ' + minutesLabel.textContent + ':' + secondsLabel.textContent + ' With ' + counter + ' moves and ' + numbOfStars + ' star(s)! ';
     var winModal = document.getElementById('modal');
     winModal.style.display='block';
     document.getElementById('motivation-message').textContent ='woohooo!';
@@ -124,6 +145,13 @@ function compareScores(a, b) {
 
  function resetGame() {
     closeModal();
+
+    // reset the count up timer
+    clearInterval(timer);
+    secondsLabel.innerHTML = "00";
+    minutesLabel.innerHTML = "00";
+    totalSeconds = 0;
+    timer = setInterval(setTime, 1000);
 
     // hide the leaderboard table.
     document.getElementById("leaderboard").style.display="none";
@@ -204,6 +232,9 @@ function compareScores(a, b) {
     document.getElementById("firstName5").textContent = arr[4].firstName;
     document.getElementById("score5").textContent = arr[4].score;
  }
+
+// start the count up timer
+var timer = setInterval(setTime, 1000);
 
 shuffle(cardsArray);
 
