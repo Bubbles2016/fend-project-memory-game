@@ -128,8 +128,6 @@ function compareScores(a, b) {
 }
 
  function gameOver () {
-    // stop the count up timer
-    //clearInterval(timer);
 
     var scorePanel = document.getElementById('score');
     scorePanel.style.visibility = 'hidden';
@@ -152,6 +150,11 @@ function compareScores(a, b) {
     minutesLabel.innerHTML = "00";
     totalSeconds = 0;
     timer = setInterval(setTime, 1000);
+
+    // show the hidden stars if any
+    document.getElementById('secondStar').style.visibility = 'visible';
+    document.getElementById('thirdStar').style.visibility = 'visible';
+
 
     // hide the leaderboard table.
     document.getElementById("leaderboard").style.display="none";
@@ -327,9 +330,11 @@ document.getElementById("cardsDeck").addEventListener('click', function (evt) {
 
                 if (unsuccessfulMoves === 9) {
                     numbOfStars = numbOfStars - 1;
+                    document.getElementById('thirdStar').style.visibility = 'hidden';
                 }
                 else if (unsuccessfulMoves === 18) {
                     numbOfStars = numbOfStars -1;
+                    document.getElementById('secondStar').style.visibility = 'hidden';
                 }
             }
         }
