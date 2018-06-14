@@ -18,7 +18,7 @@ body {
 
 body {
     background: #fff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
-    font-family: 'Coda', cursive;
+    font-family: "Coda", cursive;
 }
 
 .container {
@@ -29,7 +29,7 @@ body {
 }
 
 h1 {
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
     font-weight: 300;
 }
 
@@ -130,17 +130,17 @@ table {
 }
 
 #firstName1,
-#score1    {
+#score1 {
     background-color: gold;
 }
 
 #firstName2,
-#score2    {
+#score2 {
     background-color: silver;
 }
 
 #firstName3,
-#score3    {
+#score3 {
     background-color: #cd7f32;
 }
 
@@ -159,13 +159,6 @@ table {
 }
 
 @media (max-width: 425px) {
-    #playerName {
-        width: 70%;
-    }
-}
-
-
-@media (max-width: 425px) {
     #cardsDeck {
         width: 400px;
     }
@@ -173,6 +166,11 @@ table {
     .card {
         height: 75px !important;
         width: 75px !important;
+    }
+
+    #playerName {
+        width: 70%;
+        margin-bottom: 5px;
     }
 }
 
@@ -202,5 +200,3 @@ table {
         width: 300px;
     }
 }
-
-

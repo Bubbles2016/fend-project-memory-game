@@ -1,25 +1,33 @@
 
  // Create an array that holds all of the cards
-var cardsArray = ["fa-diamond", "fa-paper-plane-o", "fa-anchor", "fa-bolt", "fa-cube", "fa-anchor", "fa-leaf", "fa-bicycle", "fa-diamond", "fa-bomb", "fa-leaf", "fa-bomb", "fa-bolt", "fa-bicycle", "fa-paper-plane-o", "fa-cube"];
+let cardsArray = [
+            'fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 
+            'fa-cube', 'fa-anchor', 'fa-leaf', 'fa-bicycle', 
+            'fa-diamond', 'fa-bomb', 'fa-leaf', 'fa-bomb', 
+            'fa-bolt', 'fa-bicycle', 'fa-paper-plane-o', 'fa-cube'
+];
 
 // define a mock array of objects. Each object holds a fake player name and a fake score.
-var players = [{firstName:"Sam", score: 15}, {firstName:"John", score:23}, {firstName:"Jane", score:99}, {firstName:"Charlotte", score: 10}];
+let players = [
+    {firstName:'Sam', score: 15}, {firstName:'John', score:23},  
+    {firstName:'Jane', score:99}, {firstName:'Charlotte', score: 10}
+];
 
 //define an HTML collection that contains all elements with class name: card.
-var cardsElements = document.getElementsByClassName("card");
+let cardsElements = document.getElementsByClassName('card');
 
-var openedCards = [];
-var counter = 0;
-var successfulMoves = 0;
-var unsuccessfulMoves = 0;
-var numbOfStars = 3
-var minutesLabel = document.getElementById("minutes");
-var secondsLabel = document.getElementById("seconds");
-var totalSeconds = 0;
+let openedCards = [];
+let counter = 0;
+let successfulMoves = 0;
+let unsuccessfulMoves = 0;
+let numbOfStars = 3;
+let minutesLabel = document.getElementById('minutes');
+let secondsLabel = document.getElementById('seconds');
+let totalSeconds = 0;
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+    let currentIndex = array.length, temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
@@ -39,20 +47,20 @@ function setTime() {
 }
 
 function pad(val) {
-  var valString = val + "";
-  if (valString.length < 2) {
-    return "0" + valString;
-  } else {
-    return valString;
-  }
+    let valString = val + '';
+    if (valString.length < 2) {
+        return '0' + valString;
+    } else {
+        return valString;
+    }
 }
 
 function buildCards () {
-    for (var i = 0; i < cardsElements.length; i++) {
+    for (let i = 0; i < cardsElements.length; i++) {
         // TODO: add a new <i> inside every <li> element in the HTML collection 'cardsElements'.
-        var faTag = document.createElement('i');
-        var faIconName = cardsArray[i];
-        faTag.classList.add("fa");
+        let faTag = document.createElement('i');
+        let faIconName = cardsArray[i];
+        faTag.classList.add('fa');
         faTag.classList.add(faIconName);
         cardsElements[i].appendChild(faTag);
         cardsElements[i].tabIndex = 0;
@@ -60,94 +68,95 @@ function buildCards () {
 }
 
 function flipCard (evt) {
-    //console.log(evt);
-    evt.target.classList.add("open");
-    evt.target.classList.add("show");
- }
+    evt.target.classList.add('open');
+    evt.target.classList.add('show');
+}
 
- function matchingCards (arr) {
+function matchingCards (arr) {
     successfulMoves = successfulMoves + 1;
 
     // TODO: add match, animated and swing animation classes when both cards match.
-    arr[0].classList.add("match");
-    arr[0].classList.add("animated");
-    arr[0].classList.add("swing");
+    arr[0].classList.add('match');
+    arr[0].classList.add('animated');
+    arr[0].classList.add('swing');
 
-    arr[1].classList.add("match");
-    arr[1].classList.add("animated");
-    arr[1].classList.add("swing");
+    arr[1].classList.add('match');
+    arr[1].classList.add('animated');
+    arr[1].classList.add('swing');
     
     arr.pop();
     arr.pop();
     return successfulMoves;
- }
+}
 
 function unmatchingCards (arr) {
     unsuccessfulMoves = unsuccessfulMoves + 1;
 
     // add classes animated and shake on both cards.
-    arr[0].classList.add("animated");
-    arr[0].classList.add("shake");
+    arr[0].classList.add('animated');
+    arr[0].classList.add('shake');
 
-    arr[1].classList.add("animated");
-    arr[1].classList.add("shake");
+    arr[1].classList.add('animated');
+    arr[1].classList.add('shake');
 
     // remove all classes after 1 second. i.e: CSS animation ends
     setTimeout(function() {
-        arr[0].classList.remove("open");
-        arr[0].classList.remove("show");
-        arr[0].classList.remove("animated");
-        arr[0].classList.remove("shake");
-        arr[1].classList.remove("open");
-        arr[1].classList.remove("show");
-        arr[1].classList.remove("animated");
-        arr[1].classList.remove("shake");
+        arr[0].classList.remove('open');
+        arr[0].classList.remove('show');
+        arr[0].classList.remove('animated');
+        arr[0].classList.remove('shake');
+        arr[1].classList.remove('open');
+        arr[1].classList.remove('show');
+        arr[1].classList.remove('animated');
+        arr[1].classList.remove('shake');
         arr.pop();
         arr.pop();
     }, 1000);
 
     return unsuccessfulMoves;
- }
+}
 
- function movesCounter (num) {
+function movesCounter (num) {
     num = num + 1;
-    document.getElementById("move").textContent = num;
+    document.getElementById('move').textContent = num;
     return num;
- }
+}
 
- function sortPlayers (arr) {
-    arr.sort(function(a, b)
-    {
+function sortPlayers (arr)     {
+    arr.sort(function(a, b) {
       return a[1]-b[1];
     });
     return players;
- }
+}
 
 function compareScores(a, b) {
     return a.score - b.score;
 }
 
- function gameOver () {
-
-    var scorePanel = document.getElementById('score');
+function gameOver () {
+    let scorePanel = document.getElementById('score');
     scorePanel.style.visibility = 'hidden';
+    document.getElementById('secondStar').style.visibility = 'hidden';
+    document.getElementById('thirdStar').style.visibility = 'hidden';
 
-    var deck = document.getElementById('cardsDeck');
+    let deck = document.getElementById('cardsDeck');
     deck.style.visibility = 'hidden';
 
-    document.getElementById('statistics').textContent = 'Your Time (mm:ss) is: ' + minutesLabel.textContent + ':' + secondsLabel.textContent + ' With ' + counter + ' moves and ' + numbOfStars + ' star(s)! ';
-    var winModal = document.getElementById('modal');
+    document.getElementById('statistics').textContent = 'Your Time (mm:ss) is: ' + minutesLabel.textContent + 
+        ':' + secondsLabel.textContent + ' With ' + counter + ' moves and ' + numbOfStars + ' star(s)!';
+    let winModal = document.getElementById('modal');
     winModal.style.display='block';
     document.getElementById('motivation-message').textContent ='woohooo!';
- }
+    clearInterval(timer);
+}
 
- function resetGame() {
+function resetGame() {
     closeModal();
 
     // reset the count up timer
     clearInterval(timer);
-    secondsLabel.innerHTML = "00";
-    minutesLabel.innerHTML = "00";
+    secondsLabel.innerHTML = '00';
+    minutesLabel.innerHTML = '00';
     totalSeconds = 0;
     timer = setInterval(setTime, 1000);
 
@@ -157,13 +166,13 @@ function compareScores(a, b) {
 
 
     // hide the leaderboard table.
-    document.getElementById("leaderboard").style.display="none";
+    document.getElementById('leaderboard').style.display='none';
 
     // Reset the successful moves counter.
     counter = 0;
 
     // reset the game board. Remove the classes including animation classes for matching cards.
-    for (var i = 0; i < cardsElements.length; i++) {
+    for (let i = 0; i < cardsElements.length; i++) {
         cardsElements[i].classList.remove('open', 'show', 'match', 'animated', 'swing');
         //remove all <i> tags inside the <li> tags
         cardsElements[i].removeChild(cardsElements[i].childNodes[0]);
@@ -179,65 +188,65 @@ function compareScores(a, b) {
     successfulMoves = 0;
 
     // reset the number of moves.
-    document.getElementById("move").textContent = '';
+    document.getElementById('move').textContent = '';
 
     // reset the nick name input field
-    document.getElementById("playerName").value = '';
+    document.getElementById('playerName').value = '';
 
-    var scorePanel = document.getElementById('score');
-    scorePanel.style.visibility = 'visible'; 
+    let scorePanel = document.getElementById('score');
+    scorePanel.style.visibility = 'visible';
 
-    var gameBoard = document.getElementById('cardsDeck');
+    let gameBoard = document.getElementById('cardsDeck');
     gameBoard.style.visibility = 'visible';
 
- }
+}
 
- function closeModal() {
-    var congratModal = document.getElementById('modal');
+function closeModal() {
+    let congratModal = document.getElementById('modal');
     congratModal.style.display = 'none';
  }
 
- function leaderboard (arr) {
+function leaderboard (arr) {
     // Save name and score to the current local store
-    var player = document.getElementById("playerName").value;
-    if (player ==="") {
-        player = "unknown";
+    let player = document.getElementById('playerName').value;
+    if (player ==='') {
+        player = 'unknown';
     }
-    localStorage.setItem("player", player);
-    localStorage.setItem("score", counter);
+    localStorage.setItem('player', player);
+    localStorage.setItem('score', counter);
 
     // save the name and score of the current player in a new object.
-    var name = localStorage.getItem("player");
-    var finalScore = localStorage.getItem("score");
+    let name = localStorage.getItem('player');
+    let finalScore = localStorage.getItem('score');
     me = {firstName: name, score: finalScore};
 
     players.push(me);
 
     // clear the input field containing the nick name of the current player.
-    localStorage.setItem("player", "");
+    localStorage.setItem('player', '');
 
     // sort the array of players.
-    players.sort(compareScores);         
+    players.sort(compareScores);
 
-    document.getElementById("leaderboard").style.display="block";
-    document.getElementById("firstName1").textContent = arr[0].firstName;
-    document.getElementById("score1").textContent = arr[0].score;
+    document.getElementById('leaderboard').style.display='block';
+    document.getElementById('firstName1').textContent = arr[0].firstName;
+    document.getElementById('score1').textContent = arr[0].score;
 
-    document.getElementById("firstName2").textContent = arr[1].firstName;
-    document.getElementById("score2").textContent = arr[1].score;
+    document.getElementById('firstName2').textContent = arr[1].firstName;
+    document.getElementById('score2').textContent = arr[1].score;
 
-    document.getElementById("firstName3").textContent = arr[2].firstName;
-    document.getElementById("score3").textContent = arr[2].score;
+    document.getElementById('firstName3').textContent = arr[2].firstName;
+    document.getElementById('score3').textContent = arr[2].score;
 
-    document.getElementById("firstName4").textContent = arr[3].firstName;
-    document.getElementById("score4").textContent = arr[3].score;
+    document.getElementById('firstName4').textContent = arr[3].firstName;
+    document.getElementById('score4').textContent = arr[3].score;
 
-    document.getElementById("firstName5").textContent = arr[4].firstName;
-    document.getElementById("score5").textContent = arr[4].score;
- }
+    document.getElementById('firstName5').textContent = arr[4].firstName;
+    document.getElementById('score5').textContent = arr[4].score;
+}
 
 // start the count up timer
-var timer = setInterval(setTime, 1000);
+let timer = setInterval(setTime, 1000);
 
 shuffle(cardsArray);
 
@@ -245,23 +254,20 @@ shuffle(cardsArray);
 //Loop through the HTML collection to add a font awesome tag to each card element.
 buildCards ();
 
-//var adjacentCard;
-
-document.getElementById("cardsDeck").addEventListener('click', function (evt) {
-    if (evt.target.nodeName === 'LI') { 
+document.getElementById('cardsDeck').addEventListener('click', function (evt) {
+    if (evt.target.nodeName === 'LI') {
         flipCard(evt);
-        var card = evt.target;
+        let card = evt.target;
 
-        // listen to specific keydown on the keyboard such as left, right, up and down keys. 
-        document.addEventListener("keydown", function(e) {
-            var keycode = e.keyCode;
-            var adjacentCard = '';
+        // listen to specific keydown on the keyboard such as left, right, up and down keys.
+        document.addEventListener('keydown', function(e) {
+            let keycode = e.keyCode;
+            let adjacentCard = '';
             if (keycode === 39) { // right arrow shortcut
                 if (card.nextElementSibling != null) {
                     adjacentCard = card.nextElementSibling;
-                    //console.log(adjacentCard);
                     adjacentCard.focus();
-                    // set card now to be equal to the card with focus
+                    // set the card now to be equal to the card with focus on it.
                     card = adjacentCard;
                 }
             }
@@ -269,19 +275,19 @@ document.getElementById("cardsDeck").addEventListener('click', function (evt) {
             else if (keycode === 37) { // left arrow shortcut
                 if (card.previousElementSibling != null) {
                     adjacentCard = card.previousElementSibling;
-                    adjacentCard.focus();       
+                    adjacentCard.focus();
                     card = adjacentCard;
                 }
             }
 
             else if (keycode === 38) { //up arrow shortcut
-                var previousCard = card;
-                var previousCardsFound = 0;
-                // use the for loop to reach to the 4th previous sibling of the current card. 
+                let previousCard = card;
+                let previousCardsFound = 0;
+                // use the for loop to reach to the 4th previous sibling of the current card.
                 for (i = 0; i < 4; i++) {
                     if (previousCard.previousElementSibling != null) {
                         previousCard = previousCard.previousElementSibling;
-                        previousCardsFound = previousCardsFound + 1   
+                        previousCardsFound = previousCardsFound + 1;
                     }
                 }
 
@@ -294,13 +300,13 @@ document.getElementById("cardsDeck").addEventListener('click', function (evt) {
             }
 
             else if (keycode === 40) { //down arrow shortcut
-                var nextCard = card;
-                var nextCardsFound = 0;
-                // use the for loop to reach to the 4th next sibling of the current card. 
+                let nextCard = card;
+                let nextCardsFound = 0;
+                // use the for loop to reach to the 4th next sibling of the current card.
                 for (i = 0; i < 4; i++) {
                     if (nextCard.nextElementSibling != null) {
                         nextCard = nextCard.nextElementSibling;
-                        nextCardsFound = nextCardsFound + 1   
+                        nextCardsFound = nextCardsFound + 1;
                     }
                 }
 
@@ -310,7 +316,7 @@ document.getElementById("cardsDeck").addEventListener('click', function (evt) {
                     adjacentCard.focus();
                     card = adjacentCard;
                 }
-            }            
+            }
         });
         
         openedCards.push(card);
@@ -341,13 +347,13 @@ document.getElementById("cardsDeck").addEventListener('click', function (evt) {
     }
 });
 
-var allCards = document.getElementsByClassName('card');
+let allCards = document.getElementsByClassName('card');
 
-for(var i = 0; i < allCards.length; i++) {
+for(let i = 0; i < allCards.length; i++) {
     allCards[i].addEventListener('keydown', function(ev) {
-        var card = ev.target;
-        var keycode = ev.keyCode;
-        if (keycode === 13) { // enter key  
+        let card = ev.target;
+        let keycode = ev.keyCode;
+        if (keycode === 13) { // enter key
             card.click();
         }
     });
@@ -364,9 +370,9 @@ document.getElementById('playAgain').addEventListener('click', function() {
 document.getElementById('closeBut').addEventListener('click', function() {
     // close the congratulations modal, hide the game's title and change its background image.
     closeModal();
-    document.getElementById("leaderboard").style.display="none";
-    document.getElementById("title").style.visibility = 'hidden';
-    document.getElementById("body").style.backgroundImage = "url('img/gameOverBackground.png')";
+    document.getElementById('leaderboard').style.display='none';
+    document.getElementById('title').style.visibility = 'hidden';
+    document.getElementById('body').style.backgroundImage = "url('img/gameOverBackground.png')";
 
 })
 
