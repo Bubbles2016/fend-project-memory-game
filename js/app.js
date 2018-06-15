@@ -327,7 +327,7 @@ document.getElementById('cardsDeck').addEventListener('click', function (evt) {
                 successfulMoves = matchingCards(openedCards);
 
                 // if successfulMoves is equal to 8, the player wins the game.
-                if (successfulMoves === 1) {
+                if (successfulMoves === 8) {
                     setTimeout(gameOver, 500);
                 }
             }
