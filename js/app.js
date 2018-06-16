@@ -1,15 +1,13 @@
-
- // Create an array that holds all of the cards
 let cardsArray = [
-            'fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt', 
-            'fa-cube', 'fa-anchor', 'fa-leaf', 'fa-bicycle', 
-            'fa-diamond', 'fa-bomb', 'fa-leaf', 'fa-bomb', 
+            'fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt',
+            'fa-cube', 'fa-anchor', 'fa-leaf', 'fa-bicycle',
+            'fa-diamond', 'fa-bomb', 'fa-leaf', 'fa-bomb',
             'fa-bolt', 'fa-bicycle', 'fa-paper-plane-o', 'fa-cube'
 ];
 
 // define a mock array of objects. Each object holds a fake player name and a fake score.
 let players = [
-    {firstName:'Sam', score: 15}, {firstName:'John', score:23},  
+    {firstName:'Sam', score: 15}, {firstName:'John', score:23},
     {firstName:'Jane', score:99}, {firstName:'Charlotte', score: 10}
 ];
 
@@ -83,7 +81,7 @@ function matchingCards (arr) {
     arr[1].classList.add('match');
     arr[1].classList.add('animated');
     arr[1].classList.add('swing');
-    
+
     arr.pop();
     arr.pop();
     return successfulMoves;
@@ -142,7 +140,7 @@ function gameOver () {
     let deck = document.getElementById('cardsDeck');
     deck.style.visibility = 'hidden';
 
-    document.getElementById('statistics').textContent = 'Your Time (mm:ss) is: ' + minutesLabel.textContent + 
+    document.getElementById('statistics').textContent = 'Your Time (mm:ss) is: ' + minutesLabel.textContent +
         ':' + secondsLabel.textContent + ' With ' + counter + ' moves and ' + numbOfStars + ' star(s)!';
     let winModal = document.getElementById('modal');
     winModal.style.display='block';
@@ -159,6 +157,10 @@ function resetGame() {
     minutesLabel.innerHTML = '00';
     totalSeconds = 0;
     timer = setInterval(setTime, 1000);
+
+    unsuccessfulMoves = 0;
+    successfulMoves = 0;
+    numbOfStars = 3;
 
     // show the hidden stars if any
     document.getElementById('secondStar').style.visibility = 'visible';
@@ -256,6 +258,11 @@ buildCards ();
 
 document.getElementById('cardsDeck').addEventListener('click', function (evt) {
     if (evt.target.nodeName === 'LI') {
+        //Prevent the function form running when the same element is clicked //
+        if(Array.prototype.indexOf.call(evt.target.classList,"show")>-1) {                
+            return;                                                                         
+        }                                                                                 
+
         flipCard(evt);
         let card = evt.target;
 
@@ -309,7 +316,6 @@ document.getElementById('cardsDeck').addEventListener('click', function (evt) {
                         nextCardsFound = nextCardsFound + 1;
                     }
                 }
-
                 // check if the 4th next sibling exists. And make sure to set focus on the 4th next element. Not the ones before it.
                 if (nextCard != null && nextCardsFound === 4) {
                     adjacentCard = nextCard;
@@ -318,14 +324,13 @@ document.getElementById('cardsDeck').addEventListener('click', function (evt) {
                 }
             }
         });
-        
+
         openedCards.push(card);
 
         if (openedCards.length === 2) {
             counter = movesCounter(counter);
             if (openedCards[0].firstChild.className === openedCards[1].firstChild.className) {
                 successfulMoves = matchingCards(openedCards);
-
                 // if successfulMoves is equal to 8, the player wins the game.
                 if (successfulMoves === 8) {
                     setTimeout(gameOver, 500);
@@ -333,7 +338,9 @@ document.getElementById('cardsDeck').addEventListener('click', function (evt) {
             }
             else {
                 unsuccessfulMoves = unmatchingCards(openedCards);
-
+                //reset openedCards array to prevent 3 clicks bug
+                openedCards=[];   
+                //console.log(unsuccessfulMoves);                                      
                 if (unsuccessfulMoves === 9) {
                     numbOfStars = numbOfStars - 1;
                     document.getElementById('thirdStar').style.visibility = 'hidden';
@@ -354,7 +361,7 @@ for(let i = 0; i < allCards.length; i++) {
         let card = ev.target;
         let keycode = ev.keyCode;
         if (keycode === 13) { // enter key
-            card.click();
+            ev.target.click();
         }
     });
 }
@@ -379,9 +386,3 @@ document.getElementById('closeBut').addEventListener('click', function() {
 document.getElementById('refresh').addEventListener('click', function() {
     resetGame();
 })
-
-
-
-
-
-
