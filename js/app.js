@@ -1,9 +1,11 @@
 let cardsArray = [
             'fa-diamond', 'fa-paper-plane-o', 'fa-anchor', 'fa-bolt',
-            'fa-cube', 'fa-anchor', 'fa-leaf', 'fa-bicycle',
-            'fa-diamond', 'fa-bomb', 'fa-leaf', 'fa-bomb',
-            'fa-bolt', 'fa-bicycle', 'fa-paper-plane-o', 'fa-cube'
+            'fa-cube', 'fa-leaf', 'fa-bicycle', 'fa-bomb',
 ];
+// use the three dot (...), which is called spreading, to avoid duplicating the icons. 
+// Write them once in the array then with the triple dot, unpack the array twice.
+cardsArray = [...cardsArray, ...cardsArray];            
+
 
 // define a mock array of objects. Each object holds a fake player name and a fake score.
 let players = [
