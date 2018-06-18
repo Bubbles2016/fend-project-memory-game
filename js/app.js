@@ -158,9 +158,11 @@ function resetGame() {
     totalSeconds = 0;
     timer = setInterval(setTime, 1000);
 
+    // reset needed variables
     unsuccessfulMoves = 0;
     successfulMoves = 0;
     numbOfStars = 3;
+    openedCards = [];
 
     // show the hidden stars if any
     document.getElementById('secondStar').style.visibility = 'visible';
